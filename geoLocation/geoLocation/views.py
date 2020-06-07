@@ -19,7 +19,10 @@ firebaseConfig = {
 firebase = pyrebase.initialize_app(firebaseConfig)
 auth_user = firebase.auth()
 db = firebase.database()
+<<<<<<< HEAD
 
+=======
+>>>>>>> d59f936fbcce674d47233935e1360ba45658d6e0
 # def login(request):
 #     return render(request, "login.html")
 
@@ -27,15 +30,25 @@ def dashboard(request):
     if request.method == 'POST':
         email = request.POST['email']
         password = request.POST['password']
+        
         try:
             user = auth_user.sign_in_with_email_and_password(email,password)
+<<<<<<< HEAD
             print(auth_user.get_account_info(user['idToken']))
+=======
+            print('success')
+            # print(user)
+            isAdmin=db.child("users").child(user['localId']).child('isAdmin').get()
+            print(isAdmin.val())
+            
+            if(isAdmin.val()):
+                return render(request, "dashboard.html", {
+                'user': user})
+>>>>>>> d59f936fbcce674d47233935e1360ba45658d6e0
         except:
             messages.info(request, 'Invalid Credentials')
             return render(request, "dashboard.html")
-        return render(request, "dashboard.html", {
-            'user': user
-        })
+    messages.info(request, 'You are not an admin..')    
     return render(request, "dashboard.html")
 
 
