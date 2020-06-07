@@ -35,8 +35,7 @@ def dashboard(request):
             print(isAdmin.val())
             
             if(isAdmin.val()):
-                return render(request, "dashboard.html", {
-                'user': user})
+                return render(request, "dashboard.html", {'user': user})
         except:
             messages.info(request, 'Invalid Credentials')
             return render(request, "dashboard.html")

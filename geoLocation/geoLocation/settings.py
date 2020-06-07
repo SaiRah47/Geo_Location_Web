@@ -27,10 +27,18 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+GEOPOSITION_GOOGLE_MAPS_API_KEY = 'AIzaSyBUNwPV6s3WnYdFY-iTjWYUgzmYjMG8rrE'
+
 
 # Application definition
 
 INSTALLED_APPS = [
+    # my apps
+
+    # installed apps
+    'geoposition',
+
+    # django apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -51,6 +59,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'geoLocation.urls'
+
 
 TEMPLATES = [
     {
