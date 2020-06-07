@@ -18,6 +18,7 @@ firebaseConfig = {
 #   firebase.analytics()
 firebase = pyrebase.initialize_app(firebaseConfig)
 auth_user = firebase.auth()
+db = firebase.database()
 
 # def login(request):
 #     return render(request, "login.html")
@@ -28,6 +29,7 @@ def dashboard(request):
         password = request.POST['password']
         try:
             user = auth_user.sign_in_with_email_and_password(email,password)
+            print(auth_user.get_account_info(user['idToken']))
         except:
             messages.info(request, 'Invalid Credentials')
             return render(request, "dashboard.html")
