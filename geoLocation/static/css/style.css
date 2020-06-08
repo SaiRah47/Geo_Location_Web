@@ -12,6 +12,7 @@
     background-image: url('https://idapgroup.com/blog/blog/wp-content/uploads/2018/12/location.jpg');
     background-size: cover;
     background-position: center;
+    height: 100vh;
   }
   
   .login-heading {

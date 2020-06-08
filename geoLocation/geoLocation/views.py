@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import auth
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 import pyrebase
 
 firebaseConfig = {
@@ -23,24 +24,28 @@ db = firebase.database()
 #     return render(request, "login.html")
 
 def dashboard(request):
+    all_users = db.child("users").get()
+    users = []
+    for user in all_users.each():
+        if(not(user.val()['isAdmin'])):
+            users.append(user.val())
     if request.method == 'POST':
         email = request.POST['email']
         password = request.POST['password']
         
         try:
             user = auth_user.sign_in_with_email_and_password(email,password)
-            print('success')
-            # print(user)
-            isAdmin=db.child("users").child(user['localId']).child('isAdmin').get()
-            print(isAdmin.val())
-            
+            isAdmin=db.child("users").child(user['localId']).child('isAdmin').get()    
+            print(users)  
             if(isAdmin.val()):
-                return render(request, "dashboard.html", {
-                'user': user})
+                request.session['user'] = user
+                return render(request, "Report.html", {'user': user, 'users': users})
+            else:
+                messages.info(request, 'You are not an admin..')    
+                return render(request, "dashboard.html")
         except:
             messages.info(request, 'Invalid Credentials')
-            return render(request, "dashboard.html")
-    messages.info(request, 'You are not an admin..')    
+            return render(request, "dashboard.html")    
     return render(request, "dashboard.html")
 
 
@@ -48,4 +53,22 @@ def logout(request):
     auth.logout(request)
     return redirect("dashboard")
 
+
+def report(request): 
+    all_users = db.child("users").get()
+    users = []
+    for user in all_users.each():
+        if(not(user.val()['isAdmin'])):
+            users.append(user.val())
+    try:
+        print(request.session['user']['localId'])
+        user = request.session['user']
+        print(user, users)
+    except:
+        return redirect("dashboard")
+    return render(request, "Report.html", { 'user' : user,  'users': users })
+
+
+def profiles(request):
+    pass
 
