@@ -1,11 +1,12 @@
 {% extends 'Base.html' %}
 
 {% block content %}
-    {% csrf_token %}
+{% csrf_token %}
+    
     {% if user.idToken %}
-    <h1>Welcome {{ user.email }}</h1>
-    <a href="{% url 'logout' %}">Logout</a>
+        {% include 'admin_home_page.html' with value=user.email %}
     {% else %}
-    {% include 'Homepage.html' %}
+        {% include 'Homepage.html' %}
     {% endif %}
+
 {% endblock %}

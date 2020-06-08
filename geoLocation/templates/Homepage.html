@@ -1,18 +1,19 @@
 {% extends 'Base.html' %}
 
+
 {% block content %}
 <div class="container-fluid">
     <div class="row no-gutter">
-      <div class="d-none d-md-flex col-md-4 col-lg-6 bg-image"></div>
+      <!-- <div class="d-none d-md-flex col-md-4 col-lg-6 bg-image"></div> -->
       <div class="col-md-8 col-lg-6">
         <div class="login d-flex align-items-center py-5">
           <div class="container">
             <div class="row">
-              <div class="col-md-9 col-lg-8 mx-auto">
-                <h1 class="mb-5 ml-3 text-primary"> Geo Location Web App</h1>
-                <div class="card">
+              <!-- <div class="col-md-9 col-lg-8 mx-auto"> -->
+                <!-- <h1 class="mb-5 ml-3 text-primary"> Geo Location Web App</h1> -->
+                <div class="card" style="height: 28rem; width: 20rem;">
                     <div class="card-body">
-                        <h3 class="text-center mb-5 text-primary">Login</h3>
+                        <h3 class="text-center mb-5 text-primary">Admin Login</h3>
                         {% if messages %}
                             <ul class="messages">
                                 {% for message in messages %}
@@ -45,7 +46,7 @@
                         </form>
                     </div>
                 </div>
-              </div>
+              <!-- </div> -->
             </div>
           </div>
         </div>

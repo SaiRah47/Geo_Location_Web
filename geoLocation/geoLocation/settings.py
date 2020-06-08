@@ -27,10 +27,19 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# GEOPOSITION_GOOGLE_MAPS_API_KEY = 'AIzaSyBUNwPV6s3WnYdFY-iTjWYUgzmYjMG8rrE'
 
+# AIzaSyBWDD6lfrsc3-WbmUxC4QIQw57GHgIooqs
 # Application definition
 
 INSTALLED_APPS = [
+    # my apps
+    'map',
+
+    # installed apps
+    # 'geoposition',
+
+    # django apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -51,6 +60,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'geoLocation.urls'
+
 
 TEMPLATES = [
     {
@@ -78,6 +88,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'USER': 'admin',
+        'PASSWORD': '',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 

@@ -23,25 +23,32 @@ db = firebase.database()
 #     return render(request, "login.html")
 
 def dashboard(request):
+    context = {}
+    users = []
     if request.method == 'POST':
         email = request.POST['email']
         password = request.POST['password']
         
         try:
             user = auth_user.sign_in_with_email_and_password(email,password)
-            print('success')
+            # print('success')
             # print(user)
             isAdmin=db.child("users").child(user['localId']).child('isAdmin').get()
-            print(isAdmin.val())
-            
+            # print('Admin:',isAdmin.val())
             if(isAdmin.val()):
-                return render(request, "dashboard.html", {
-                'user': user})
+                print("coming in")
+                # users.append(user["idToken"])
+                # users.append(user["email"])
+                # users.append()
+                context['user'] = user
+                return render(request, "Dashboard.html", context)
+
         except:
+            print("comming into except")
             messages.info(request, 'Invalid Credentials')
-            return render(request, "dashboard.html")
+            return render(request, "Dashboard.html")
     messages.info(request, 'You are not an admin..')    
-    return render(request, "dashboard.html")
+    return render(request, "Dashboard.html")
 
 
 def logout(request):
