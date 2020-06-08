@@ -1,8 +1,31 @@
 {% extends 'Base.html' %}
+
 {% block content %}
 
 {% include 'Navbar.html' %}
-{% for user in users %}
-<p>{{user.name}}</p>
-{% endfor %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm col-md-4 mt-5">
+            <form action="{% url 'report' %}" method="POST">
+             {% csrf_token %}
+             <div class="form-group">
+                <select class="form-control" id="userSelect" name="userSelect">  
+                  <option value="0" disabled selected>Select User</option>  
+                {% for key,val in users.items %}
+                  <option value="{{key}}">{{val.name}}</option>
+                {% endfor %}                
+                </select>
+              </div>
+              <div class="form-group row">
+                <label for="date" class="col-2 col-form-label">Date</label>
+                <div class="col-10">
+                  <input class="form-control" type="date" name="date" value="Select Date" id="date">
+                </div>
+              </div>
+              <button value="Get Report" type="submit" class="btn btn-primary btn-block">Get Report</button>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

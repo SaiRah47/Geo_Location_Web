@@ -25,10 +25,10 @@ db = firebase.database()
 
 def dashboard(request):
     all_users = db.child("users").get()
-    users = []
+    users = {}
     for user in all_users.each():
         if(not(user.val()['isAdmin'])):
-            users.append(user.val())
+            users[user.key()] = user.val()
     if request.method == 'POST':
         email = request.POST['email']
         password = request.POST['password']
@@ -39,7 +39,7 @@ def dashboard(request):
             print(users)  
             if(isAdmin.val()):
                 request.session['user'] = user
-                return render(request, "Report.html", {'user': user, 'users': users})
+                return redirect('report')
             else:
                 messages.info(request, 'You are not an admin..')    
                 return render(request, "dashboard.html")
@@ -55,15 +55,24 @@ def logout(request):
 
 
 def report(request): 
-    all_users = db.child("users").get()
-    users = []
-    for user in all_users.each():
-        if(not(user.val()['isAdmin'])):
-            users.append(user.val())
     try:
-        print(request.session['user']['localId'])
+        # print(request.session['user']['localId'])
         user = request.session['user']
-        print(user, users)
+        all_users = db.child("users").get()
+        users = {}
+        for user in all_users.each():
+            if(not(user.val()['isAdmin'])):
+                users[user.key()] = user.val()
+        print(users)
+        if request.method == 'POST':
+            # print("before retiving values")
+            user_select = request.POST['userSelect']
+            date_pick = request.POST['date']
+            li=list(date_pick.split('-'))[::-1]
+            date_final='-'.join(li)
+            # print(user_select, date_final)
+            map_pickers=db.child('latlong').child(user_select).child(date_final).get().val()
+            print(map_pickers)
     except:
         return redirect("dashboard")
     return render(request, "Report.html", { 'user' : user,  'users': users })
