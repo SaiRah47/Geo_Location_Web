@@ -29,11 +29,12 @@ ALLOWED_HOSTS = []
 
 GEOPOSITION_GOOGLE_MAPS_API_KEY = 'AIzaSyBUNwPV6s3WnYdFY-iTjWYUgzmYjMG8rrE'
 
-
+# AIzaSyBWDD6lfrsc3-WbmUxC4QIQw57GHgIooqs
 # Application definition
 
 INSTALLED_APPS = [
     # my apps
+    'map',
 
     # installed apps
     'geoposition',

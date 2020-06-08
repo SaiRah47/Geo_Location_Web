@@ -1,10 +1,12 @@
 {% extends 'Base.html' %}
 
 {% block content %}
-    {% csrf_token %}
+{% csrf_token %}
+    
     {% if user.idToken %}
         {% include 'admin_home_page.html' with value=user.email %}
     {% else %}
         {% include 'Homepage.html' %}
     {% endif %}
+
 {% endblock %}
