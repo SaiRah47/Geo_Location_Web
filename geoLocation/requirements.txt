@@ -4,8 +4,6 @@ chardet==3.0.4
 Django==3.0.7
 django-appconf==1.0.4
 django-classy-tags==1.0.0
-django-easy-maps==1.1.0
-django-geoposition==0.3.0
 gcloud==0.18.3
 geographiclib==1.50
 geopy==1.22.0
