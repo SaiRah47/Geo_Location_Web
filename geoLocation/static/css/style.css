@@ -128,5 +128,31 @@
   } */
 
   #map{
+    /* margin: 0 auto; */
+    margin-left: 50px;
+    overflow: hidden;
+    width: 100%;
+    height: 50vh;
     margin: 0 auto;
+  }
+
+  /* .card{
+    height: 60% !important;
+    width: 100% !important;
+  } */
+
+
+
+  .container_out{
+    height: 90vh;
+    width: 100%;
+  }
+  .container1{
+    height: 20%;
+    width: 100%;
+  }
+  .container2{
+    height: 80%;
+    width: 100%;
+    overflow: hidden;
   }
