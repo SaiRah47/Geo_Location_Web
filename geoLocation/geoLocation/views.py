@@ -56,28 +56,35 @@ def logout(request):
 
 def report(request): 
     try:
-        # print(request.session['user']['localId'])
         user = request.session['user']
+        print(user)
         all_users = db.child("users").get()
         users = {}
         for user in all_users.each():
             if(not(user.val()['isAdmin'])):
                 users[user.key()] = user.val()
-        print(users)
         if request.method == 'POST':
-            # print("before retiving values")
             user_select = request.POST['userSelect']
             date_pick = request.POST['date']
             li=list(date_pick.split('-'))[::-1]
             date_final='-'.join(li)
-            # print(user_select, date_final)
             map_pickers=db.child('latlong').child(user_select).child(date_final).get().val()
-            print(map_pickers)
-    except:
+    except KeyError:
+        messages.info(request, "Please Login Into Your Account...")
         return redirect("dashboard")
     return render(request, "Report.html", { 'user' : user,  'users': users })
 
 
 def profiles(request):
-    pass
+    try:
+        user = request.session['user']
+        all_users = db.child("users").get()
+        users = {}
+        for user in all_users.each():
+            users[user.key()] = user.val()
+        return render(request, "Profiles.html", { 'users': users })
+    except KeyError:
+        messages.info(request, "Please Login Into Your Account...")
+        return redirect("dashboard")
+
 
