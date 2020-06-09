@@ -1,0 +1,26 @@
+{% extends 'Base.html' %}
+
+{% block content %}
+
+{% include 'Navbar.html' %}
+
+<div class="container">
+    {%  for user in users.values  %}
+        {% if forloop.counter0|divisibleby:3 %} <div class="row"> {%  endif %}
+          <div class="col-sm col-md-4 mt-4">
+              <div class="card mt-4" style="height: 250px;">
+                <div class="card-header" style="margin-top: -50px;">
+                    <img class="card-img-top" style="width: 40px;" src="https://freeiconshop.com/wp-content/uploads/edd/person-outline-filled-128x128.png" alt="Card image cap">
+                    {{ user.name }}{% if user.isAdmin %}<span class="badge badge-success ml-2">admin</span>{% endif %}
+                  </div>
+                  <div class="card-content mt-3 pl-2 text-left">
+                       <h5 style="margin-bottom: 20px;">Designation:   <span class="text-secondary">{{user.designation }}</span></h5>  
+                       <h5  style="margin-bottom: 20px;">Email:  <span class="text-secondary">{{ user.email }}</span></h5>
+                       <h5>Phone:  <span class="text-secondary">{{ user.phone }}</span></h5>
+                  </div> 
+              </div>
+          </div>
+    {%  if forloop.counter|divisibleby:3 or forloop.last %}</div>{%  endif %}
+    {%  endfor %}
+ </div>
+{% endblock %}  

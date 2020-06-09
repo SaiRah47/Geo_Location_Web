@@ -3,7 +3,8 @@ from django.contrib import auth
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 import pyrebase
-
+import json
+from django.core import serializers
 firebaseConfig = {
     'apiKey' : "AIzaSyB0rtz2Q8ejgA63Yv0McdkDZWZ-_xyI8xs",
     'authDomain' : "geolocation-1b35f.firebaseapp.com",
@@ -15,13 +16,11 @@ firebaseConfig = {
     'measurementId' : "G-XH3YMEGJYL"
 }
 
-#   firebase.initializeApp(firebaseConfig)
-#   firebase.analytics()
+
 firebase = pyrebase.initialize_app(firebaseConfig)
 auth_user = firebase.auth()
 db = firebase.database()
-# def login(request):
-#     return render(request, "login.html")
+
 
 def dashboard(request):
     all_users = db.child("users").get()
@@ -55,29 +54,45 @@ def logout(request):
 
 
 def report(request): 
+    map_pickers = []
+    ml=list()
+    json_map_list=[]
+    map_str=''
     try:
-        # print(request.session['user']['localId'])
         user = request.session['user']
+        print(user)
         all_users = db.child("users").get()
         users = {}
         for user in all_users.each():
             if(not(user.val()['isAdmin'])):
                 users[user.key()] = user.val()
-        print(users)
         if request.method == 'POST':
-            # print("before retiving values")
             user_select = request.POST['userSelect']
             date_pick = request.POST['date']
             li=list(date_pick.split('-'))[::-1]
             date_final='-'.join(li)
-            # print(user_select, date_final)
             map_pickers=db.child('latlong').child(user_select).child(date_final).get().val()
-            print(map_pickers)
-    except:
+            map_user_latlng_dict=dict(map_pickers)
+            for k,v in map_user_latlng_dict.items():              
+                map_str+=str(v['latitude'])+','+str(v['longitude'])+','+str(v['time'])+';'           
+    except KeyError:
+        print("exception caused")
         return redirect("dashboard")
-    return render(request, "Report.html", { 'user' : user,  'users': users })
-
+    except TypeError:
+        messages.info(request, "No Report With That Details....")
+    return render(request, "Report.html", { 'user' : user,  'users': users, "latlng" : map_str})
+ 
 
 def profiles(request):
-    pass
+    try:
+        user = request.session['user']
+        all_users = db.child("users").get()
+        users = {}
+        for user in all_users.each():
+            users[user.key()] = user.val()
+        return render(request, "Profiles.html", { 'users': users })
+    except KeyError:
+        messages.info(request, "Please Login Into Your Account...")
+        return redirect("dashboard")
+
 
