@@ -3,33 +3,35 @@
 {% block content %}
 
 {% include 'Navbar.html' %}
-
-<div class="container">
-  <div class="row">
-    <div class="col-sm col-md-4 mt-5">
       <form action="{% url 'report' %}" method="POST">
         {% csrf_token %}
-        <div class="form-group">
-          <select class="form-control" id="userSelect" name="userSelect">
-            <option value="0" disabled selected>Select User</option>
-            {% for key,val in users.items %}
-            <option value="{{key}}">{{val.name}}</option>
-            {% endfor %}
-          </select>
-        </div>
-        <div class="form-group row">
-          <label for="date" class="col-2 col-form-label">Date</label>
+      <div class="row ml-3 m-3 select">
+        <div class="col-sm col-md-4 mb-2"><select class="form-control" id="userSelect" name="userSelect">
+          <option value="0" disabled selected>Select User</option>
+          {% for key,val in users.items %}
+          <option value="{{key}}">{{val.name}}</option>
+          {% endfor %}
+        </select></div>
+        <div class="col-sm col-md-4 mb-2">
           <div class="col-10">
             <input class="form-control" type="date" name="date" value="Select Date" id="date">
-          </div>
-        </div>
-        <button value="Get Report" type="submit" class="btn btn-primary btn-block">Get Report</button>
-      </form>
-    </div>
+          </div></div>
+        <div class="col-sm col-md-4 mb-2"><button value="Get Report" type="submit" class="btn btn-primary btn-block">Get Report</button></div>
+      </div>
+    </form>
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <div class="row">
+      {% include 'MapScreen.html' with user_latlng=latlng %}
   </div>
-</div>
-
-{% include 'MapScreen.html' with user_latlng=latlng %}
-
-
 {% endblock %}

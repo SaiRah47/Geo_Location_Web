@@ -16,13 +16,11 @@ firebaseConfig = {
     'measurementId' : "G-XH3YMEGJYL"
 }
 
-#   firebase.initializeApp(firebaseConfig)
-#   firebase.analytics()
+
 firebase = pyrebase.initialize_app(firebaseConfig)
 auth_user = firebase.auth()
 db = firebase.database()
-# def login(request):
-#     return render(request, "login.html")
+
 
 def dashboard(request):
     all_users = db.child("users").get()
@@ -65,32 +63,24 @@ def report(request):
         print(user)
         all_users = db.child("users").get()
         users = {}
-        # map_pickers_data = {}
         for user in all_users.each():
             if(not(user.val()['isAdmin'])):
                 users[user.key()] = user.val()
-        # print(users)
         if request.method == 'POST':
             user_select = request.POST['userSelect']
             date_pick = request.POST['date']
             li=list(date_pick.split('-'))[::-1]
             date_final='-'.join(li)
-           
             map_pickers=db.child('latlong').child(user_select).child(date_final).get().val()
-            
             map_user_latlng_dict=dict(map_pickers)
-            print("Map Pickers:",map_user_latlng_dict)
-            
             for k,v in map_user_latlng_dict.items():              
-                # ml.append([v['latitude'],v['longitude'],v['time']])
-                # ml.append([v['latitude'],v['longitude']])
-                map_str+=str(v['latitude'])+','+str(v['longitude'])+','+str(v['time'])+';'
-            # json_map_list=serializers.serialize("json",ml)           
+                map_str+=str(v['latitude'])+','+str(v['longitude'])+','+str(v['time'])+';'           
     except KeyError:
         print("exception caused")
         return redirect("dashboard")
+    except TypeError:
+        messages.info(request, "No Report With That Details....")
     return render(request, "Report.html", { 'user' : user,  'users': users, "latlng" : map_str})
-    # return render(request, "Report.html", { 'user' : user,  'users': users, 'latlng': map_pickers, })
  
 
 def profiles(request):
