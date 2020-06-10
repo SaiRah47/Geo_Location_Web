@@ -10,7 +10,7 @@
         var myLatLng = { lat: parseFloat(initLtlg[0]), lng: parseFloat(initLtlg[1]) };
         map = new google.maps.Map(document.getElementById('map'), {
             center: myLatLng,
-            zoom: 8,
+            zoom: 10,
             mapTypeId: google.maps.MapTypeId.ROADMAP
         });
         var infowindow = new google.maps.InfoWindow();
@@ -25,12 +25,36 @@
                 lat: lati,
                 lng: lngi
             });
-            marker = new google.maps.Marker({
+            if(i==0){
+                marker = new google.maps.Marker({
                 position: new google.maps.LatLng(lati, lngi),
-                map: map
+                map: map,
+                label: 'S',
+                // icon:'https://maps.gstatic.com/mapfiles/ms2/micons/red.png'
             });
+            }
+            else if(i==latlongArr.length-2){
+                marker = new google.maps.Marker({
+                position: new google.maps.LatLng(lati, lngi),
+                map: map,
+                label:"E",
+                // icon:'https://maps.gstatic.com/mapfiles/ms2/micons/green.png'
+
+            });
+            }
+            else{
+                marker = new google.maps.Marker({
+                position: new google.maps.LatLng(lati, lngi),
+                map: map,
+                icon:'https://maps.gstatic.com/mapfiles/ms2/micons/purple-pushpin.png',
+            });
+            }
+
+            
 
             google.maps.event.addListener(marker, 'click', (function (marker, i) {
+                var latlng = latlongArr[i].split(',');
+                var time= latlng[2]
                 return function () {
                     infowindow.setContent(time);
                     infowindow.open(map, marker);
