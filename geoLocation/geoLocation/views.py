@@ -55,17 +55,18 @@ def logout(request):
 
 def report(request): 
     map_pickers = []
-    ml=list()
-    json_map_list=[]
     map_str=''
     try:
         user = request.session['user']
-        print(user)
         all_users = db.child("users").get()
         users = {}
+        users_loc = ''
         for user in all_users.each():
             if(not(user.val()['isAdmin'])):
                 users[user.key()] = user.val()
+                if user.val().get('latitude') is not None:
+                    users_loc += str(user.val()['name'])+','+str(user.val()['latitude'])+','+str(user.val()['longitude'])+';'
+        print(users_loc)
         if request.method == 'POST':
             user_select = request.POST['userSelect']
             date_pick = request.POST['date']
@@ -80,7 +81,7 @@ def report(request):
         return redirect("dashboard")
     except TypeError:
         messages.info(request, "No Report With That Details....")
-    return render(request, "Report.html", { 'user' : user,  'users': users, "latlng" : map_str})
+    return render(request, "Report.html", { 'user' : user,  'users': users, "latlng" : map_str, "users_loc": users_loc})
  
 
 def profiles(request):

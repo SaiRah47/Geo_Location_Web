@@ -3,7 +3,9 @@
 {% block content %}
 
 {% include 'Navbar.html' %}
-      <form action="{% url 'report' %}" method="POST">
+<div class="container_out d-flex flex-column">
+  <div class="container_1">
+<form action="{% url 'report' %}" method="POST">
         {% csrf_token %}
       <div class="row ml-3 m-3 select">
         <div class="col-sm col-md-4 mb-2"><select class="form-control" id="userSelect" name="userSelect">
@@ -19,6 +21,8 @@
         <div class="col-sm col-md-4 mb-2"><button value="Get Report" type="submit" class="btn btn-primary btn-block">Get Report</button></div>
       </div>
     </form>
+  </div>
+
     {% if messages %}
         <ul class="messages">
             {% for message in messages %}
@@ -31,7 +35,44 @@
             {% endfor %}
         </ul>
     {% endif %}
+    <div class="container2 flex-grow-1">
     <div class="row">
+      {% if latlng %}
       {% include 'MapScreen.html' with user_latlng=latlng %}
+      {% else %}
+      {% include 'UsersMap.html' with users_loc=users_loc %}
+      {% endif %}
   </div>
+</div>
+</div>
+<!-- <div class="container">
+  <div class="row mt-5">
+    <div class="col-sm col-md-7">
+      {% include 'MapScreen.html' with user_latlng=latlng %}
+    </div>
+    <div class="col-sm col-md">
+      <div class="card">
+        <div class="card-body">
+      <form action="{% url 'report' %}" method="POST">
+        {% csrf_token %}
+        
+          <div class="form-group"><select class="form-control" id="userSelect" name="userSelect">
+              <option value="0" disabled selected>Select User</option>
+              {% for key,val in users.items %}
+              <option value="{{key}}">{{val.name}}</option>
+              {% endfor %}
+            </select></div>
+          <div class="form-group">
+            <div class="col-10">
+              <input class="form-control" type="date" name="date" value="Select Date" id="date">
+            </div>
+          </div>
+          <div class="form-group"><button value="Get Report" type="submit"
+              class="btn btn-primary btn-block">Get Report</button></div>
+      </form>
+    </div>
+     </div>
+    </div>
+  </div>
+</div> -->
 {% endblock %}

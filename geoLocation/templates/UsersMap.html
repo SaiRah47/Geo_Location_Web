@@ -1,14 +1,15 @@
-<div id="map" ></div>
+<div id="usersmap" ></div>
 <script>
     var map;
-    var locations = '{{ user_latlng | safe }}';
+    var locations = '{{ users_loc | safe }}';
+    
     var latlongArr = locations.split(';');
     console.log(latlongArr)
     var initLtlg = latlongArr[0].split(',');
-    var user = []
+    console.log(initLtlg)
     function initMap() {
-        var myLatLng = { lat: parseFloat(initLtlg[0]), lng: parseFloat(initLtlg[1]) };
-        map = new google.maps.Map(document.getElementById('map'), {
+        var myLatLng = { lat: parseFloat(initLtlg[1]), lng: parseFloat(initLtlg[2]) };
+        map = new google.maps.Map(document.getElementById('usersmap'), {
             center: myLatLng,
             zoom: 8,
             mapTypeId: google.maps.MapTypeId.ROADMAP
@@ -18,13 +19,9 @@
         var marker, i;
         for (i = 0; i < latlongArr.length-1; i++) {
             var latlng = latlongArr[i].split(',');
-            var lati = parseFloat(latlng[0])
-            var lngi = parseFloat(latlng[1])
-            var time= latlng[2]
-            user.push({
-                lat: lati,
-                lng: lngi
-            });
+            var lati = parseFloat(latlng[1])
+            var lngi = parseFloat(latlng[2])
+            var name = latlng[0]
             marker = new google.maps.Marker({
                 position: new google.maps.LatLng(lati, lngi),
                 map: map
@@ -32,20 +29,12 @@
 
             google.maps.event.addListener(marker, 'click', (function (marker, i) {
                 return function () {
-                    infowindow.setContent(time);
+                    infowindow.setContent(name);
                     infowindow.open(map, marker);
                 }
             })(marker, i));
 
-            var userPath = new google.maps.Polyline({
-                path: user,
-                geodesic: true,
-                strokeColor: '#FF0000',
-                strokeOpacity: 1.0,
-                strokeWeight: 2
-            });
 
-            userPath.setMap(map);
         }
     }
 </script>
