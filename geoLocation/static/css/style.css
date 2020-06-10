@@ -155,10 +155,12 @@
     /* background-color: black; */
     height: 90vh;
     width: 100%;
+    /* overflow: hidden; */
   }
   .container_1{
-    height: 10%;
+    height: 13%;
     width: 100%;
+    margin-bottom: 20px;
   }
   .container2{
     height: 90%;

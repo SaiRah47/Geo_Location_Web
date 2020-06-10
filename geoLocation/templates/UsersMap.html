@@ -1,8 +1,8 @@
-<div id="usersmap" ></div>
+<div id="usersmap"></div>
 <script>
     var map;
     var locations = '{{ users_loc | safe }}';
-    
+
     var latlongArr = locations.split(';');
     console.log(latlongArr)
     var initLtlg = latlongArr[0].split(',');
@@ -11,23 +11,37 @@
         var myLatLng = { lat: parseFloat(initLtlg[1]), lng: parseFloat(initLtlg[2]) };
         map = new google.maps.Map(document.getElementById('usersmap'), {
             center: myLatLng,
-            zoom: 8,
+            zoom: 10,
             mapTypeId: google.maps.MapTypeId.ROADMAP
         });
         var infowindow = new google.maps.InfoWindow();
-
+        var image = {
+            url: 'https://firebasestorage.googleapis.com/v0/b/geolocation-1b35f.appspot.com/o/icons%2Fmarkeruser.png?alt=media&token=d28b5736-f236-4816-ad2a-208baf4dcdb6',
+            // This marker is 20 pixels wide by 32 pixels high.
+            // size: (20, 32),
+            // // The origin for this image is (0, 0).
+            // origin: new google.maps.Point(0, 0),
+            // // The anchor for this image is the base of the flagpole at (0, 32).
+            // anchor: new google.maps.Point(0, 32)
+        };
         var marker, i;
-        for (i = 0; i < latlongArr.length-1; i++) {
+        for (i = 0; i < latlongArr.length - 1; i++) {
             var latlng = latlongArr[i].split(',');
             var lati = parseFloat(latlng[1])
             var lngi = parseFloat(latlng[2])
             var name = latlng[0]
+
             marker = new google.maps.Marker({
                 position: new google.maps.LatLng(lati, lngi),
-                map: map
+                map: map,
+                animation: google.maps.Animation.DROP,
+                icon: image,
+                // 'https://firebasestorage.googleapis.com/v0/b/geolocation-1b35f.appspot.com/o/icons%2Fmarkeruser.png?alt=media&token=6585cbeb-5608-4055-a5a6-a908c85da3f4'
             });
 
             google.maps.event.addListener(marker, 'click', (function (marker, i) {
+                var latlng = latlongArr[i].split(',');
+            var name = latlng[0]
                 return function () {
                     infowindow.setContent(name);
                     infowindow.open(map, marker);
@@ -38,6 +52,5 @@
         }
     }
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyArbAIIe2DNFzV8bWdqno7S-9UcZmMlkos&callback=initMap"
-    async defer></script>
- 
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyArbAIIe2DNFzV8bWdqno7S-9UcZmMlkos&callback=initMap" async
+    defer></script>
