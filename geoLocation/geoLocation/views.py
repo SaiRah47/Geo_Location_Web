@@ -6,7 +6,7 @@ import pyrebase
 import json
 from django.core import serializers
 firebaseConfig = {
-    'apiKey' : "AIzaSyB0rtz2Q8ejgA63Yv0McdkDZWZ-_xyI8xs",
+    'apiKey' : "YOUR_API_KEY",
     'authDomain' : "geolocation-1b35f.firebaseapp.com",
     'databaseURL' : "https://geolocation-1b35f.firebaseio.com",
     'projectId' : "geolocation-1b35f",
