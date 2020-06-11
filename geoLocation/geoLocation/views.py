@@ -67,21 +67,26 @@ def report(request):
                 if user.val().get('latitude') is not None:
                     users_loc += str(user.val()['name'])+','+str(user.val()['latitude'])+','+str(user.val()['longitude'])+';'
         print(users_loc)
+        # print(request.GET['userSelect'])
         if request.method == 'POST':
             user_select = request.POST['userSelect']
             date_pick = request.POST['date']
-            li=list(date_pick.split('-'))[::-1]
-            date_final='-'.join(li)
-            map_pickers=db.child('latlong').child(user_select).child(date_final).get().val()
-            map_user_latlng_dict=dict(map_pickers)
-            for k,v in map_user_latlng_dict.items():              
-                map_str+=str(v['latitude'])+','+str(v['longitude'])+','+str(v['time'])+';'           
+            
+            if date_pick and user_select:
+                li=list(date_pick.split('-'))[::-1]
+                date_final='-'.join(li)
+                map_pickers=db.child('latlong').child(user_select).child(date_final).get().val()
+                map_user_latlng_dict=dict(map_pickers)
+                for k,v in map_user_latlng_dict.items():              
+                    map_str+=str(v['latitude'])+','+str(v['longitude'])+','+str(v['time'])+';'           
     except KeyError:
         print("exception caused")
         return redirect("dashboard")
+    except NameError:
+        messages.info(request, "Field Values Cannot Be Empty...")
     except TypeError:
         messages.info(request, "No Report With That Details....")
-    return render(request, "Report.html", { 'user' : user,  'users': users, "latlng" : map_str, "users_loc": users_loc})
+    return render(request, "Report.html", { 'user' : user,  'users': users, "latlng" : map_str, "users_loc": users_loc, 'values': request.POST, })
  
 
 def profiles(request):
