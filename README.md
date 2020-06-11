@@ -7,6 +7,7 @@
 3. Activate the virtual environment
    - In windows ``` venv\Scripts\activate```
    - In Ubuntu ```source venv/bin/activate```
+4. Install Django and Pyrebase using the following command ``` pip install django Pyrebase4 ```
 4. Go Inside GeoLocation Folder using cd ./geoLocation/
 5. Run the following commands
    - ```python3 manage.py makemigrations```
