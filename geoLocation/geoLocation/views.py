@@ -40,7 +40,7 @@ def dashboard(request):
                 request.session['user'] = user
                 return redirect('report')
             else:
-                messages.info(request, 'You are not an admin..')    
+                messages.info(request, 'You are not an admin')    
                 return render(request, "dashboard.html")
         except:
             messages.info(request, 'Invalid Credentials')
@@ -80,7 +80,7 @@ def report(request):
         print("exception caused")
         return redirect("dashboard")
     except TypeError:
-        messages.info(request, "No Report With That Details....")
+        messages.info(request, "No Report With proided details")
     return render(request, "Report.html", { 'user' : user,  'users': users, "latlng" : map_str, "users_loc": users_loc})
  
 
@@ -93,7 +93,7 @@ def profiles(request):
             users[user.key()] = user.val()
         return render(request, "Profiles.html", { 'users': users })
     except KeyError:
-        messages.info(request, "Please Login Into Your Account...")
+        messages.info(request, "Please Login")
         return redirect("dashboard")
 
 
